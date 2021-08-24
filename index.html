@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>IDGAF</title>
+      <link rel="stylesheet" href="./style.css" />
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    </head>
+        <body>
+            <div id="parent">
+              <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#"><img src="logo.jpg" width="69px" height="50px"></a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                      <li class="nav-item" >
+                        <a class="nav-link active" aria-current="page" href="#one">Home</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#one">Stop-Watch</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#two">Alarm-Clock</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#three">Piano</a>
+                      </li>
+                  </div>
+                </div>
+              </nav>
+              <style>
+                .navbar-custom{
+                  position:fixed;
+                  top:0px;
+                  width: 100%;
+                  background-color: #e3f2fd;
+                }
+              </style>
+                <section id="one">
+                    <h1>Stop Watch</h1>
+                    <p><span id="seconds">00</span>:<span id="tens">00</span></p>
+                    <br>
+                    <p>
+                       <button id="button-start" type="button" class="btn btn-success">START</button>
+                       <button id="button-stop" type="button" class="btn btn-danger">STOP</button>
+                       <button id="button-reset" type="button" class="btn btn-warning">RESET</button>
+                   </p>
+                </section>
+                <section id="two">
+                    <h1>Alarm-Clock</h1>
+                    <input type="datetime-local" id="time">
+                    <button id="alarmBtn" onclick="setAlarm(this);" type="button" class="btn btn-primary btn-sm">Set Alarm</button>
+                    <div id="alarmOptions" style="display: none;">
+                      <button type="button" onclick="snooze(this);" class="btn btn-warning">Snooze</button>
+                      <button type="button" onclick="stopAlarm(this);" class="btn btn-success">Stop Alarm</button>
+                    </div>
+                    <script type="text/javascript">
+                      var alarmSound = new Audio();
+                      alarmSound.src = 'resources/alarm.mp3';
+                  
+                      var alarmOptions = document.getElementById('alarmOptions');
+                      var timer;
+                  
+                      function setAlarm(button) {
+                        var timestamp = document.getElementById('time').valueAsNumber;
+                        if (isNaN(timestamp)) {
+                          alert('Invalid date!');
+                          return;
+                        }
+                  
+                        var alarm = new Date(timestamp);
+                        alarm = new Date(alarm.getUTCFullYear(), alarm.getUTCMonth(), alarm.getUTCDate(), alarm.getUTCHours(), alarm.getUTCMinutes(), alarm.getUTCSeconds());
+                  
+                        var timeDifference = alarm.getTime() - (new Date()).getTime();
+                        if (timeDifference < 0) {
+                          alert('Specified time is already passed !');
+                          return;
+                        }
+                        timer = setTimeout(startAlarm, timeDifference);
+                        button.textContent = 'Cancel Alarm';
+                        button.setAttribute('onclick', 'cancelAlarm(this)');
+                      };
+                  
+                      function startAlarm() {
+                        alarmSound.play();
+                        alarmOptions.style.display = '';
+                      };
+                  
+                      function cancelAlarm(button) {
+                        clearTimeout(timer);
+                        button.textContent = 'Set Alarm';
+                        button.setAttribute('onclick', 'setAlarm(this)');
+                      };
+                  
+                      function stopAlarm() {
+                        alarmSound.pause();
+                        alarmSound.currentTime = 0;
+                        alarmOptions.style.display = 'none';
+                        cancelAlarm(document.getElementById('alarmBtn'));
+                      };
+                  
+                      function snooze() {
+                        stopAlarm();
+                        timer = setTimeout(startAlarm, 300000);
+                      };
+                  
+                  
+                    </script>
+                </section>
+                <section id="three">
+                    <h1>Piano</h1>
+                    <div class="piano">
+                      <button class="white-key C4-key"></button>
+                      <button class="black-key Db4-key"></button>
+                      <button class="white-key D4-key"></button>
+                      <button class="black-key Eb4-key"></button>
+                      <button class="white-key E4-key"></button>
+                      <button class="white-key F4-key"></button>
+                      <button class="black-key Gb4-key"></button>
+                      <button class="white-key G4-key"></button>
+                      <button class="black-key Ab4-key"></button>
+                      <button class="white-key A4-key"></button>
+                      <button class="black-key Bb4-key"></button>
+                      <button class="white-key B4-key"></button>
+                      <button class="white-key C5-key"></button>
+                      <button class="black-key Db5-key"></button>
+                      <button class="white-key D5-key"></button>
+                      <button class="black-key Eb5-key"></button>
+                      <button class="white-key E5-key"></button>
+                    </div>
+                </section>
+            </div>
+            <script  type="text/javascript"  src="main.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+        </body>
+</html>
